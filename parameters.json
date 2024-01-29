@@ -1,0 +1,9 @@
+{
+    "mes_add_one": {
+        "step": 20
+    },
+    "modified_mes": {
+        "step": 1,
+        "part_of_initial_budget": 1
+    }
+}
