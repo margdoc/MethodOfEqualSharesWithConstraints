@@ -52,8 +52,6 @@ def modified_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup
     previously_chosen: List[int] = []
     iteration = 0
     while True:
-        iteration += 1
-
         projects: List[Project] = fold_dict(lambda x, g: x + list(map(lambda p: discounted(p, g[1], iteration), g[0].projects)),
                                             [],
                                             zip_dict(groups, discount_steps))
@@ -63,7 +61,11 @@ def modified_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup
 
         if not can_afford(budget, chosen_projects):
             return previously_chosen
+        if chosen_ids == previously_chosen:
+            return chosen_ids
         previously_chosen = chosen_ids
+
+        iteration += 1
 
 def modified_mes_one_step(budget: int, projects: List[Project], profiles: List[Profile]) -> List[int]:
     projects_dict = { p.id: PabulibProject(str(p.id), p.cost) for p in projects }
