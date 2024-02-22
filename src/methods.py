@@ -7,6 +7,7 @@ from .utils import can_afford, fold_dict, get_all_projects_dict, get_projects_fr
                    get_budgets, get_groups
 from .mes import modified_mes, mes
 from .greedy import greedy
+from .constrained_mes import constrained_mes
 
 
 MethodType = Callable[[Dict[str, InputDataPerGroup], ParametersGroup], List[int]]
@@ -24,12 +25,14 @@ def method_decorator(func: MethodType) -> MethodType:
 methods_desc: Dict[str, str] = {
     "greedy": "Greedy algorithm",
     "mes_add_one": "Method of Equal Shares (AddOne)",
-    "modified_mes": "Modified Method of Equal Shares", # TODO: add description
+    # "modified_mes": "Modified Method of Equal Shares", # TODO: add description
+    "constrained_mes": "Constrained Method of Equal Shares", # TODO: add description
 }
 methods: Dict[str, MethodType] = {
     "greedy": method_decorator(greedy),
     "mes_add_one": method_decorator(mes),
-    "modified_mes": method_decorator(modified_mes),
+    # "modified_mes": method_decorator(modified_mes),
+    "constrained_mes": method_decorator(constrained_mes),
 }
 assert set(methods.keys()) == set(methods_desc.keys())
 

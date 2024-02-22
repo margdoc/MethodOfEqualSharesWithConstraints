@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import Callable, List, Dict, Tuple, TypeVar
 
-from .types import Profile, Project, ProjectsGroup, InputDataPerGroup
+from .types import ConstraintType, Profile, Project, ProjectsGroup, InputDataPerGroup
 
 
 T = TypeVar('T')
@@ -68,3 +68,6 @@ def get_groups(data: Dict[str, InputDataPerGroup]) -> Dict[str, ProjectsGroup]:
 
 def get_budgets(data: Dict[str, InputDataPerGroup]) -> Dict[str, int]:
     return map_dict(lambda d: d.budget, data)
+
+def get_constraints(data: Dict[str, InputDataPerGroup]) -> Dict[str, ConstraintType]:
+    return map_dict(lambda d: d.constraint, data)
