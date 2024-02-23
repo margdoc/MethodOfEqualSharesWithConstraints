@@ -82,4 +82,7 @@ def run_metrics(data: Dict[str, InputDataPerGroup], outcomes: Dict[str, MethodOu
 def run(data: Dict[str, InputDataPerGroup], run_options: RunOptions) -> Results:
     outcomes = run_methods(data, run_options)
     metrics_scores, metrics_results_for_group = run_metrics(data, outcomes, run_options)
-    return Results(outcomes=outcomes, metrics_scores=metrics_scores, district_results=metrics_results_for_group)
+    return Results(outcomes=outcomes,
+                   metrics_scores=metrics_scores,
+                   district_results=metrics_results_for_group,
+                   used_parameters=run_options.parameters.to_dict())

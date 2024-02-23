@@ -18,6 +18,7 @@ class Results(BaseModel):
     outcomes: Dict[str, MethodOutcome]
     metrics_scores: MetricsScores
     district_results: Dict[str, MetricsScores]
+    used_parameters: Dict[str, Dict[str, Any]]
 
 def district_results_to_json(district_results: Dict[str, MetricsScores]) -> Dict[str, Any]:
     return {
@@ -72,6 +73,9 @@ def save_results(results: Results, results_path: str) -> None:
 
     with open(results_dir / "logs.txt", 'w', encoding="utf-8") as file:
         file.write(get_logs())
+
+    with open(results_dir / "parameters.json", 'w', encoding="utf-8") as file:
+        file.write(json.dumps(results.used_parameters, indent=4))
 
     latest_path = Path(results_path) / "latest"
     if latest_path.is_symlink():

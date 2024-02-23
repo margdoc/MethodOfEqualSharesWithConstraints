@@ -56,6 +56,9 @@ class ParametersGroup:
     def __repr__(self) -> str:
         return repr(self._parameters)
 
+    def to_dict(self) -> Dict[str, Any]:
+        return { name: parameter.value for name, parameter in self._parameters.items() }
+
 class Parameters:
     _parameters: Dict[str, ParametersGroup]
 
@@ -95,6 +98,9 @@ class Parameters:
 
     def __repr__(self) -> str:
         return repr(self._parameters)
+
+    def to_dict(self) -> Dict[str, Dict[str, Any]]:
+        return { group: parameters.to_dict() for group, parameters in self._parameters.items() }
 
 default_parameters: Parameters = Parameters()
 
