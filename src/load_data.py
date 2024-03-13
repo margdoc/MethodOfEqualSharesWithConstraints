@@ -6,33 +6,43 @@ from .types import ConstraintType, InputDataPerGroup, Profile, Project, Projects
 
 def load_file(path: str) -> Tuple[Dict[str, str], ProjectsGroup]:
     with open(path, 'r') as f:
+        # META
         meta: Dict[str, str] = {}
         assert f.readline() == 'META\n'
-        line = f.readline()
         line = f.readline()
         while line != 'PROJECTS\n':
             key, value = line[:-1].split(';')
             meta[key] = value
             line = f.readline()
+
+        # PROJECTS
         projects = []
         line = f.readline()
+        keys = line[:-1].split(';')
+        id_index = keys.index('project_id')
+        cost_index = keys.index('cost')
         line = f.readline()
         while line != 'VOTES\n':
-            _id, cost, _, _, _, _, _, _, _ = line[:-1].split(';')
-            # longitude=float(longitude) if longitude else None
-            # latitude=float(latitude) if latitude else None
+            splitted = line[:-1].split(';')
+            _id = splitted[id_index]
+            cost = splitted[cost_index]
             projects.append(Project(_id=int(_id), cost=int(cost)))
             line = f.readline()
+
+        # VOTES
         profiles = []
         line = f.readline()
+        keys = line[:-1].split(';')
+        voter_id_index = keys.index('voter_id')
+        votes_index = keys.index('vote')
+        neighborhood_index = keys.index('neighborhood') if 'neighborhood' in keys else None
         line = f.readline()
         while line:
-            # _id, age, sex, voting_method, votes_str, district = line[:-1].split(';')
-            values = line[:-1].split(';')
-            votes: List[int] = [int(vote) for vote in values[4].split(',')] if values[4] != "" else []
-            # age = int(values[1]) if values[1] else None
-            district = values[5] if len(values) == 6 else None
-            profiles.append(Profile(_id=int(values[0]), votes=votes, district=district))
+            splitted = line[:-1].split(';')
+            _id = splitted[voter_id_index]
+            votes = [int(v) for v in splitted[votes_index].split(',')] if splitted[votes_index] != '' else []
+            district = splitted[neighborhood_index] if neighborhood_index is not None else None
+            profiles.append(Profile(_id=int(_id), votes=votes, district=district))
             line = f.readline()
     return meta, ProjectsGroup(projects=projects, profiles=profiles)
 
