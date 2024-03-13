@@ -1,21 +1,78 @@
 {
-    "Ochota": 2470382,
-    "Ursus": 1796641,
-    "Targ\u00f3wek": 3668144,
-    "Mokot\u00f3w": 6437966,
-    "Praga-P\u00f3\u0142noc": 1946361,
-    "Praga-Po\u0142udnie": 5315065,
-    "Wawer": 2245802,
-    "W\u0142ochy": 1272621,
-    "Rembert\u00f3w": 748600,
-    "\u015ar\u00f3dmie\u015bcie": 3443563,
-    "Bia\u0142o\u0142\u0119ka": 3518423,
-    "Bielany": 3892724,
-    "Bemowo": 3593284,
-    "Wilan\u00f3w": 1122900,
-    "Wola": 4192164,
-    "citywide": 22458022,
-    "\u017boliborz": 1497201,
-    "Weso\u0142a": 748600,
-    "Ursyn\u00f3w": 4491604
+    "Ochota": {
+        "lower_bound": 2470382,
+        "upper_bound": 3705573
+    },
+    "Ursus": {
+        "lower_bound": 1796641,
+        "upper_bound": 2694962
+    },
+    "Targ\u00f3wek": {
+        "lower_bound": 3668144,
+        "upper_bound": 5502216
+    },
+    "Mokot\u00f3w": {
+        "lower_bound": 6437966,
+        "upper_bound": 9656949
+    },
+    "Praga-P\u00f3\u0142noc": {
+        "lower_bound": 1946361,
+        "upper_bound": 2919542
+    },
+    "Praga-Po\u0142udnie": {
+        "lower_bound": 5315065,
+        "upper_bound": 7972598
+    },
+    "Wawer": {
+        "lower_bound": 2245802,
+        "upper_bound": 3368703
+    },
+    "W\u0142ochy": {
+        "lower_bound": 1272621,
+        "upper_bound": 1908932
+    },
+    "Rembert\u00f3w": {
+        "lower_bound": 748600,
+        "upper_bound": 1122901
+    },
+    "\u015ar\u00f3dmie\u015bcie": {
+        "lower_bound": 3443563,
+        "upper_bound": 5165344
+    },
+    "Bia\u0142o\u0142\u0119ka": {
+        "lower_bound": 3518423,
+        "upper_bound": 5277634
+    },
+    "Bielany": {
+        "lower_bound": 3892724,
+        "upper_bound": 5839086
+    },
+    "Bemowo": {
+        "lower_bound": 3593284,
+        "upper_bound": 5389926
+    },
+    "Wilan\u00f3w": {
+        "lower_bound": 1122900,
+        "upper_bound": 1684351
+    },
+    "Wola": {
+        "lower_bound": 4192164,
+        "upper_bound": 6288246
+    },
+    "citywide": {
+        "lower_bound": 22458022,
+        "upper_bound": 33687033
+    },
+    "\u017boliborz": {
+        "lower_bound": 1497201,
+        "upper_bound": 2245802
+    },
+    "Weso\u0142a": {
+        "lower_bound": 748600,
+        "upper_bound": 1122901
+    },
+    "Ursyn\u00f3w": {
+        "lower_bound": 4491604,
+        "upper_bound": 6737407
+    }
 }

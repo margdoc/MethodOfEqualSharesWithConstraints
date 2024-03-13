@@ -1,7 +1,7 @@
 import os
 from typing import Dict, List, Tuple
 
-from .types import InputDataPerGroup, Profile, Project, ProjectsGroup
+from .types import ConstraintType, InputDataPerGroup, Profile, Project, ProjectsGroup
 
 
 def load_file(path: str) -> Tuple[Dict[str, str], ProjectsGroup]:
@@ -44,11 +44,11 @@ def load_data(path: str) -> Dict[str, InputDataPerGroup]:
         if filename.endswith('.pb'):
             meta, projects_group = load_file(os.path.join(path, filename))
             if 'subunit' in meta:
-                districts[meta['subunit']] = InputDataPerGroup(group=projects_group, budget=int(meta['budget']), constraint=None)
+                districts[meta['subunit']] = InputDataPerGroup(group=projects_group, budget=int(meta['budget']), constraint=ConstraintType.none())
             else:
                 if citywide is not None:
                     raise Exception('Multiple citywide files found')
-                citywide = InputDataPerGroup(group=projects_group, budget=int(meta['budget']), constraint=None)
+                citywide = InputDataPerGroup(group=projects_group, budget=int(meta['budget']), constraint=ConstraintType.none())
 
     if citywide is None:
         raise Exception('No citywide file found')

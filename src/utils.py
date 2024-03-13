@@ -60,7 +60,7 @@ def merge_input_data(data: Dict[str, InputDataPerGroup]) -> InputDataPerGroup:
     return InputDataPerGroup(
         group=merge_project_groups(map_dict(lambda d: d.group, data)),
         budget=sum(d.budget for d in data.values()),
-        constraint=None, # TODO
+        constraint=ConstraintType.none(), # TODO
     )
 
 def get_groups(data: Dict[str, InputDataPerGroup]) -> Dict[str, ProjectsGroup]:

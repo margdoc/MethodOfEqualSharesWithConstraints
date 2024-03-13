@@ -27,10 +27,10 @@ class Discounts:
         for group, (cost, constraint) in zip_dict(costs, constraints).items():
             self.discounts[group] += self.discount_per_iteration * self.step
 
-            if constraint is None or cost >= constraint:
+            if constraint is None or constraint.lower_bound is None or cost >= constraint.lower_bound:
                 continue
 
-            self.discounts[group] += self.step * (1 - cost / constraint)
+            self.discounts[group] += self.step * (1 - cost / constraint.lower_bound)
 
 
 register_parameter("constrained_mes", "step", float, 0.5)

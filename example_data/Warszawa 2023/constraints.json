@@ -1,21 +1,78 @@
 {
-    "Bielany": 4207041,
-    "Weso\u0142a": 809046,
-    "W\u0142ochy": 1375379,
-    "Ursus": 1941712,
-    "Rembert\u00f3w": 809046,
-    "Ochota": 2669853,
-    "Bemowo": 3883423,
-    "Mokot\u00f3w": 6957800,
-    "Wola": 4530660,
-    "Wilan\u00f3w": 1213569,
-    "Ursyn\u00f3w": 4854279,
-    "\u015ar\u00f3dmie\u015bcie": 3721613,
-    "Wawer": 2427139,
-    "\u017boliborz": 1618092,
-    "citywide": 24271396,
-    "Targ\u00f3wek": 3964328,
-    "Praga-P\u00f3\u0142noc": 2103520,
-    "Bia\u0142o\u0142\u0119ka": 3802518,
-    "Praga-Po\u0142udnie": 5744230
+    "Bielany": {
+        "lower_bound": 4207041,
+        "upper_bound": 6310562
+    },
+    "Weso\u0142a": {
+        "lower_bound": 809046,
+        "upper_bound": 1213569
+    },
+    "W\u0142ochy": {
+        "lower_bound": 1375379,
+        "upper_bound": 2063068
+    },
+    "Ursus": {
+        "lower_bound": 1941712,
+        "upper_bound": 2912568
+    },
+    "Rembert\u00f3w": {
+        "lower_bound": 809046,
+        "upper_bound": 1213569
+    },
+    "Ochota": {
+        "lower_bound": 2669853,
+        "upper_bound": 4004780
+    },
+    "Bemowo": {
+        "lower_bound": 3883423,
+        "upper_bound": 5825134
+    },
+    "Mokot\u00f3w": {
+        "lower_bound": 6957800,
+        "upper_bound": 10436700
+    },
+    "Wola": {
+        "lower_bound": 4530660,
+        "upper_bound": 6795991
+    },
+    "Wilan\u00f3w": {
+        "lower_bound": 1213569,
+        "upper_bound": 1820354
+    },
+    "Ursyn\u00f3w": {
+        "lower_bound": 4854279,
+        "upper_bound": 7281418
+    },
+    "\u015ar\u00f3dmie\u015bcie": {
+        "lower_bound": 3721613,
+        "upper_bound": 5582420
+    },
+    "Wawer": {
+        "lower_bound": 2427139,
+        "upper_bound": 3640708
+    },
+    "\u017boliborz": {
+        "lower_bound": 1618092,
+        "upper_bound": 2427139
+    },
+    "citywide": {
+        "lower_bound": 24271396,
+        "upper_bound": 36407095
+    },
+    "Targ\u00f3wek": {
+        "lower_bound": 3964328,
+        "upper_bound": 5946492
+    },
+    "Praga-P\u00f3\u0142noc": {
+        "lower_bound": 2103520,
+        "upper_bound": 3155281
+    },
+    "Bia\u0142o\u0142\u0119ka": {
+        "lower_bound": 3802518,
+        "upper_bound": 5703777
+    },
+    "Praga-Po\u0142udnie": {
+        "lower_bound": 5744230,
+        "upper_bound": 8616345
+    }
 }

@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from pydantic import BaseModel, Field
 
 
@@ -15,7 +15,14 @@ class ProjectsGroup(BaseModel):
     projects: List[Project]
     profiles: List[Profile]
 
-ConstraintType = Optional[int]
+class ConstraintType(BaseModel):
+    lower_bound: Optional[int]
+    upper_bound: Optional[int]
+
+    @classmethod
+    def none(self):
+        return ConstraintType(lower_bound=None, upper_bound=None)
+
 ConstraintsType = Optional[Dict[str, ConstraintType]]
 
 class InputDataPerGroup(BaseModel):

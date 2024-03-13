@@ -48,29 +48,29 @@ def number_of_selected_projects(data: InputDataPerGroup, selected_projects: List
     selected_projects_set = set(selected_projects)
     return len(list(s for s in data.group.projects if s.id in selected_projects_set))
 
-def lower_constraint_satisfaction(data: InputDataPerGroup, selected_projects: List[int]) -> float:
-    if data.constraint is None:
+def lower_bound_constraint_satisfaction(data: InputDataPerGroup, selected_projects: List[int]) -> float:
+    if data.constraint is None or data.constraint.lower_bound is None:
         return 0
-    return cost(data, selected_projects) / data.constraint
+    return cost(data, selected_projects) / data.constraint.lower_bound
 
-def satisfatied_constraints_group(data: InputDataPerGroup, selected_projects: List[int]) -> float:
-    if data.constraint is None:
+def lower_bound_satisfatied_constraints_group(data: InputDataPerGroup, selected_projects: List[int]) -> float:
+    if data.constraint is None or data.constraint.lower_bound is None:
         return 1 # TODO
-    return 1 if cost(data, selected_projects) >= data.constraint else 0
+    return 1 if cost(data, selected_projects) >= data.constraint.lower_bound else 0
 
-def satisfatied_constraints(data: Dict[str, InputDataPerGroup], selected_projects: List[int]) -> float:
-    return sum(satisfatied_constraints_group(data[group], selected_projects) for group in data) / len(data)
+def lower_bound_satisfatied_constraints(data: Dict[str, InputDataPerGroup], selected_projects: List[int]) -> float:
+    return sum(lower_bound_satisfatied_constraints_group(data[group], selected_projects) for group in data) / len(data)
 
-def constraints_satisfaction_group(data: InputDataPerGroup, selected_projects: List[int]) -> float:
-    if data.constraint is None:
+def lower_bound_constraints_satisfaction_group(data: InputDataPerGroup, selected_projects: List[int]) -> float:
+    if data.constraint is None or data.constraint.lower_bound is None:
         return 1
     summed_cost = cost(data, selected_projects)
-    if summed_cost >= data.constraint:
+    if summed_cost >= data.constraint.lower_bound:
         return 1
-    return summed_cost / data.constraint
+    return summed_cost / data.constraint.lower_bound
 
-def constraints_satisfaction(data: Dict[str, InputDataPerGroup], selected_projects: List[int]) -> float:
-    return sum(constraints_satisfaction_group(data[group], selected_projects) for group in data) / len(data)
+def lower_bound_constraints_satisfaction(data: Dict[str, InputDataPerGroup], selected_projects: List[int]) -> float:
+    return sum(lower_bound_constraints_satisfaction_group(data[group], selected_projects) for group in data) / len(data)
 
 MetricUnaryForGroupType = Callable[[InputDataPerGroup, List[int]], MetricResultType]
 MetricUnaryType = Callable[[Dict[str, InputDataPerGroup], List[int]], MetricResultType]
@@ -82,18 +82,18 @@ metrics_unary_desc: Dict[str, str] = {
     "cost": "Total cost of selected projects",
     "budget_usage": "Total cost of selected projects divided by budget",
     "number_of_selected_projects": "Number of selected projects",
-    "lower_constraint_satisfaction": "Total cost of selected projects divided by constraint",
-    "satisfatied_constraints": "Percentage of groups that have their constraint satisfied",
-    "constraints_satisfaction": "Average percentage of constraint satisfaction",
+    "lower_constraint_satisfaction": "Total cost of selected projects divided by lower bound constraint",
+    "lower_bound_satisfatied_constraints": "Percentage of groups that have their lower bound constraint satisfied",
+    "lower_bound_constraints_satisfaction": "Average percentage of lower bound constraint satisfaction",
 }
 metrics_unary: Dict[str, Tuple[MetricUnaryType | None, MetricUnaryForGroupType | None]] = {
     "average_satisfaction": metric_from_only_for_group(average_satisfaction),
     "cost": metric_from_only_for_group(cost),
     "budget_usage": metric_from_only_for_group(budget_usage),
     "number_of_selected_projects": metric_from_only_for_group(number_of_selected_projects),
-    "lower_constraint_satisfaction": (None, lower_constraint_satisfaction),
-    "satisfatied_constraints": (satisfatied_constraints, satisfatied_constraints_group),
-    "constraints_satisfaction": (constraints_satisfaction, constraints_satisfaction_group),
+    "lower_constraint_satisfaction": (None, lower_bound_constraint_satisfaction),
+    "lower_bound_satisfatied_constraints": (lower_bound_satisfatied_constraints, lower_bound_satisfatied_constraints_group),
+    "lower_bound_constraints_satisfaction": (lower_bound_constraints_satisfaction, lower_bound_constraints_satisfaction_group),
 }
 metrics_binary_desc: Dict[str, str] = {
     "better_than": "Percentage of profiles that prefer projects selected by the first method over projects selected by the second method",

@@ -4,6 +4,8 @@ import os
 from typing import Any, Dict
 from tabulate import tabulate
 
+from src.types import ConstraintType
+
 from .results import save_results
 from .load_data import load_data
 from .logger import logger
@@ -162,6 +164,9 @@ def cli_execute(args: argparse.Namespace) -> None:
         if os.path.isfile(constraints_path):
             with open(constraints_path, "r", encoding="utf-8") as f:
                 constraints = json.load(f)
+                constraints = {
+                    group: ConstraintType(**constraint) for group, constraint in constraints.items()
+                }
  
         logger.info("Methods to run: %s", ', '.join(methods))
         if len(metrics) > 0:
