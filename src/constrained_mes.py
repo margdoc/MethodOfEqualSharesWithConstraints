@@ -100,6 +100,9 @@ def constrained_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGr
         if chosen_ids == previously_chosen:
             logger.debug("No changes in the chosen projects")
             return chosen_ids
+        if abs(fold_dict(operator.add, 0, get_costs_per_group(chosen_ids)) - fold_dict(operator.add, 0, get_costs_per_group(previously_chosen))) < parameters["difference_threshold"] * budget:
+            logger.debug("Difference in costs is too small")
+            return chosen_ids
 
         discounts.next_iteration(costs, constraints)
         previously_chosen = chosen_ids
