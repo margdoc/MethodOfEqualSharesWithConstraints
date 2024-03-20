@@ -27,15 +27,17 @@ class Discounts:
         for group, (cost, constraint) in zip_dict(costs, constraints).items():
             self.discounts[group] += self.discount_per_iteration * self.step
 
-            if constraint is None or constraint.lower_bound is None or cost >= constraint.lower_bound:
-                continue
-
-            self.discounts[group] += self.step * (1 - cost / constraint.lower_bound)
+            if constraint is not None:
+                if constraint.lower_bound is not None and cost < constraint.lower_bound:
+                    self.discounts[group] += self.step * (1 - cost / constraint.lower_bound)
+                elif constraint.upper_bound is not None and cost > constraint.upper_bound:
+                    self.discounts[group] -= self.step * (1 - cost / constraint.upper_bound)
 
 
 register_parameter("constrained_mes", "step", float, 0.5)
 register_parameter("constrained_mes", "discount_per_iteration", float, 0.01)
 register_parameter("constrained_mes", "initial_price_increase", float, 0.75)
+register_parameter("constrained_mes", "difference_threshold", float, 0.01)
 def constrained_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> List[int]:
     groups, budgets, constraints = get_groups(data), get_budgets(data), get_constraints(data)
     budget = fold_dict(operator.add, 0, budgets)
@@ -58,17 +60,6 @@ def constrained_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGr
         for _id in chosen_ids:
             costs[projects_groups[_id]] += projects_dict[_id].cost
         return costs
-
-    def get_discount(cost: int, constraint: ConstraintType) -> float:
-        if constraint is None or cost >= constraint:
-            return 0
-        return 1 - cost / constraint
-
-    def add_discounts(discounts1: Dict[str, float], discounts2: Dict[str, float]) -> Dict[str, float]:
-        return map_dict(lambda g: min(1, g[0] + g[1]), zip_dict(discounts1, discounts2))
-
-    def get_discounts(costs: Dict[str, int]) -> Dict[str, float]:
-        return map_dict(lambda g: get_discount(g[0], g[1]), zip_dict(costs, constraints))
 
     logger.debug("Budget: %i" % budget)
     discounts = Discounts(groups.keys(), parameters["initial_price_increase"], parameters["discount_per_iteration"], parameters["step"])
