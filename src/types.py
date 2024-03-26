@@ -35,3 +35,5 @@ class InputDataPerGroup(BaseModel):
     group: ProjectsGroup
     budget: int
     constraint: ConstraintType
+
+MethodResultType = Optional[BaseModel]

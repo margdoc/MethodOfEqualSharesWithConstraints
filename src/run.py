@@ -34,8 +34,9 @@ def run_methods(data: Dict[str, InputDataPerGroup], run_options: RunOptions) -> 
         result = method(data, parameters_group)
         end = time.time()
         results[name] = MethodOutcome(
-            selected_projects=result,
-            time=end - start
+            selected_projects=result[0],
+            time=end - start,
+            data=result[1],
         )
     return results
 

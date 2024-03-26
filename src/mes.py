@@ -1,13 +1,13 @@
 from copy import deepcopy
 import operator
-from typing import Dict, List, Collection
+from typing import Dict, List, Collection, Tuple
 from pabutools.election import Instance, Project as PabulibProject, ApprovalProfile, \
                                ApprovalBallot, SatisfactionMeasure, AbstractBallot,  \
                                AbstractProfile
 from pabutools.rules import method_of_equal_shares
 from pabutools.utils import Numeric
 
-from .types import InputDataPerGroup, Profile, Project
+from .types import InputDataPerGroup, Profile, Project, MethodResultType
 from .parameters import ParametersGroup, register_parameter
 from .utils import can_afford, fold_dict, get_budgets, get_groups, get_projects_from_list, \
                    map_dict, merge_project_groups, zip_dict
@@ -33,7 +33,7 @@ class MySatisfactionMeasure(SatisfactionMeasure):
 
 register_parameter("modified_mes", "step", float, 0.1)
 register_parameter("modified_mes", "part_of_initial_budget", float, 0.8)
-def modified_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> List[int]:
+def modified_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> Tuple[List[int], MethodResultType]:
     groups, budgets = get_groups(data), get_budgets(data)
     budget = int(fold_dict(operator.add, 0, budgets) * parameters["part_of_initial_budget"])
     all_projects: List[Project] = fold_dict(lambda x, g: x + g.projects, [], groups)
@@ -60,9 +60,9 @@ def modified_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup
         chosen_projects = get_projects_from_list(projects_dict, chosen_ids)
 
         if not can_afford(budget, chosen_projects):
-            return previously_chosen
+            return previously_chosen, None
         if chosen_ids == previously_chosen:
-            return chosen_ids
+            return chosen_ids, None
         previously_chosen = chosen_ids
 
         iteration += 1
@@ -84,13 +84,13 @@ def modified_mes_one_step(budget: int, projects: List[Project], profiles: List[P
     return [int(p.name) for p in outcome]
 
 register_parameter("mes_add_one", "step", int, 20)
-def mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> List[int]:
+def mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> Tuple[List[int], MethodResultType]:
     groups, budgets = get_groups(data), get_budgets(data)
     budget = fold_dict(operator.add, 0, budgets)
     projects: List[Project] = fold_dict(lambda x, g: x + g.projects, [], groups)
     profiles = merge_project_groups(groups).profiles
 
-    return mes_folded(budget, projects, profiles, parameters)
+    return mes_folded(budget, projects, profiles, parameters), None
 
 def mes_folded(budget: int, projects: List[Project], profiles: List[Profile], parameters: ParametersGroup) -> List[int]:
     projects_dict = { p.id: PabulibProject(str(p.id), p.cost) for p in projects }

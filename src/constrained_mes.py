@@ -1,6 +1,6 @@
 from copy import deepcopy
 import operator
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from pabutools.election import Instance, Project as PabulibProject, ApprovalProfile, \
                                ApprovalBallot
 from pabutools.rules import method_of_equal_shares
@@ -8,7 +8,7 @@ import logging
 import math
 
 from .mes import MySatisfactionMeasure
-from .types import ConstraintType, InputDataPerGroup, Profile, Project
+from .types import InputDataPerGroup, Profile, Project, MethodResultType
 from .parameters import ParametersGroup, register_parameter
 from .utils import can_afford, fold_dict, get_budgets, get_constraints, get_groups, \
                    get_projects_from_list, map_dict, merge_project_groups, zip_dict
@@ -38,7 +38,7 @@ register_parameter("constrained_mes", "step", float, 0.5)
 register_parameter("constrained_mes", "discount_per_iteration", float, 0.01)
 register_parameter("constrained_mes", "initial_price_increase", float, 0.75)
 register_parameter("constrained_mes", "difference_threshold", float, 0.01)
-def constrained_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> List[int]:
+def constrained_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGroup) -> Tuple[List[int], MethodResultType]:
     groups, budgets, constraints = get_groups(data), get_budgets(data), get_constraints(data)
     budget = fold_dict(operator.add, 0, budgets)
     all_projects: List[Project] = fold_dict(lambda x, g: x + g.projects, [], groups)
@@ -87,13 +87,13 @@ def constrained_mes(data: Dict[str, InputDataPerGroup], parameters: ParametersGr
 
         if not can_afford(budget, chosen_projects):
             logger.debug("Chosen projects exceed the budget")
-            return previously_chosen
+            return previously_chosen, None
         if chosen_ids == previously_chosen:
             logger.debug("No changes in the chosen projects")
-            return chosen_ids
+            return chosen_ids, None
         if abs(fold_dict(operator.add, 0, get_costs_per_group(chosen_ids)) - fold_dict(operator.add, 0, get_costs_per_group(previously_chosen))) < parameters["difference_threshold"] * budget:
             logger.debug("Difference in costs is too small")
-            return chosen_ids
+            return chosen_ids, None
 
         discounts.next_iteration(costs, constraints)
         previously_chosen = chosen_ids

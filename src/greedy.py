@@ -1,13 +1,14 @@
 import operator
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
+from .methods import MethodResultType
 from .types import InputDataPerGroup, ProjectsGroup
 from .parameters import ParametersGroup
 from .utils import fold_dict, map_dict
 
 
-def greedy(data: Dict[str, InputDataPerGroup], _parameters: ParametersGroup) -> List[int]:
-    return fold_dict(operator.add, [], map_dict(greedy_for_group, data))
+def greedy(data: Dict[str, InputDataPerGroup], _parameters: ParametersGroup) -> Tuple[List[int], MethodResultType]:
+    return fold_dict(operator.add, [], map_dict(greedy_for_group, data)), None
 
 def greedy_for_group(data: InputDataPerGroup) -> List[int]:
     group = data.group

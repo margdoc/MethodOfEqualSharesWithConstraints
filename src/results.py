@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from datetime import datetime
 import os
 from pathlib import Path
@@ -7,13 +7,14 @@ from pydantic import BaseModel
 
 from .metrics import MetricsScores
 from .logger import get_logs
-from .types import ConstraintsType, DataShort
+from .types import ConstraintsType, DataShort, MethodResultType
 
 # TODO: correctly handle polish letters in files
 
 class MethodOutcome(BaseModel):
     selected_projects: List[int]
     time: float
+    data: Optional[MethodResultType]
 
 class Results(BaseModel):
     outcomes: Dict[str, MethodOutcome]
