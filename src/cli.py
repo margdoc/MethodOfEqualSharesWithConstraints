@@ -36,7 +36,7 @@ def execute_run(data_path: str, result_path: str, run_options: RunOptions) -> No
     if run_options.constraints is not None:
         for group, constraint in run_options.constraints.items():
             if group not in data:
-                raise Exception(f"Group {group} is not in data")
+                raise KeyError(f"Group {group} is not in data")
             data[group].constraint = constraint
 
     results = run(data, run_options)
@@ -55,11 +55,11 @@ def cli_prepare() -> argparse.ArgumentParser:
         "run",
         help="run methods and compare them with metrics",
     )
-    methods_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "methods",
         help="list available methods",
     )
-    metrics_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "metrics",
         help="list available metrics",
     )
@@ -122,36 +122,36 @@ def cli_execute(args: argparse.Namespace) -> None:
         metrics = set(args.metrics or [])
 
         if len(methods) == 0:
-            raise Exception("No methods selected")
+            raise ValueError("No methods selected")
         if len(methods) == 1:
             binary_metrics = metrics_binary_desc.keys()
             for metric in metrics:
                 if metric in binary_metrics:
-                    raise Exception("Only one method selected, but used a metric that compares outcomes of two methods")
+                    raise ValueError("Only one method selected, but used a metric that compares outcomes of two methods")
 
         data_path = args.data_path
         if data_path is None or data_path == "":
-            raise Exception("No data path provided")
+            raise ValueError("No data path provided")
         if not os.path.isdir(data_path):
-            raise Exception("Data path is not a directory")
+            raise IsADirectoryError("Data path is not a directory")
         results_path = args.results_path
         if results_path is None:
-            raise Exception("No results path provided")
+            raise ValueError("No results path provided")
         if not os.path.isdir(results_path):
-            raise Exception("Results path is not a directory")
+            raise IsADirectoryError("Results path is not a directory")
 
         provided_parameters = {}
         for p in (args.parameters or []):
             splitted = p.split("=")
             if len(splitted) != 2:
-                raise Exception(f"Invalid parameter format: %s", p)
+                raise ValueError(f"Invalid parameter format: {p}")
             key, value = splitted
             provided_parameters[key] = value
         
         parameters_from_file: Dict[str, Dict[str, Any]] = {}
         if args.parameters_file is not None:
             if not os.path.isfile(args.parameters_file):
-                raise Exception(f"Parameters file does not exist: {args.parameters_file}")
+                raise FileNotFoundError(f"Parameters file does not exist: {args.parameters_file}")
             with open(args.parameters_file, "r", encoding="utf-8") as f:
                 parameters_from_file = json.load(f)
 

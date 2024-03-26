@@ -81,5 +81,5 @@ def save_results(results: Results, results_path: str) -> None:
     if latest_path.is_symlink():
         latest_path.unlink()
     elif latest_path.exists():
-        raise Exception("latest is not a symlink")
+        raise FileNotFoundError("latest is not a symlink")
     latest_path.symlink_to(results_dir.absolute(), target_is_directory=True)
