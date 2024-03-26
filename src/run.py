@@ -1,7 +1,7 @@
 import time
 from typing import Dict, Set, Tuple
 
-from .types import ConstraintsType, InputDataPerGroup
+from .types import ConstraintsType, DataShort, InputDataPerGroup
 from .results import MethodOutcome, Results
 from .logger import logger
 from .parameters import Parameters, ParametersGroup
@@ -86,4 +86,11 @@ def run(data: Dict[str, InputDataPerGroup], run_options: RunOptions) -> Results:
                    metrics_scores=metrics_scores,
                    district_results=metrics_results_for_group,
                    used_parameters=run_options.parameters.to_dict(),
-                   constraints=run_options.constraints)
+                   constraints=run_options.constraints,
+                   data_short={
+                        group_name: DataShort(
+                            budget=group.budget,
+                            lower_bound=round(group.constraint.lower_bound / group.budget, 2),
+                            upper_bound=round(group.constraint.upper_bound / group.budget, 2),
+                        ) for group_name, group in data.items()
+                   })

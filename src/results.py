@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 from .metrics import MetricsScores
 from .logger import get_logs
-from .types import ConstraintsType
+from .types import ConstraintsType, DataShort
 
 # TODO: correctly handle polish letters in files
 
@@ -21,6 +21,7 @@ class Results(BaseModel):
     district_results: Dict[str, MetricsScores]
     used_parameters: Dict[str, Dict[str, Any]]
     constraints: ConstraintsType
+    data_short: Dict[str, DataShort]
 
 def district_results_to_json(district_results: Dict[str, MetricsScores]) -> Dict[str, Any]:
     return {
@@ -78,6 +79,11 @@ def save_results(results: Results, results_path: str) -> None:
 
     with open(results_dir / "parameters.json", 'w', encoding="utf-8") as file:
         file.write(json.dumps(results.used_parameters, indent=4))
+
+    with open(results_dir / "data_short.json", 'w', encoding="utf-8") as file:
+        file.write(json.dumps({
+            group: data.dict() for group, data in results.data_short.items()
+        }, indent=4))
 
     latest_path = Path(results_path) / "latest"
     if latest_path.is_symlink():

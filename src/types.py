@@ -26,6 +26,11 @@ class ConstraintType(BaseModel):
 class ConstraintsType(BaseModel):
     constraints: Optional[Dict[str, ConstraintType]]
 
+class DataShort(BaseModel):
+    budget: int
+    lower_bound: Optional[float]
+    upper_bound: Optional[float]
+
 class InputDataPerGroup(BaseModel):
     group: ProjectsGroup
     budget: int
