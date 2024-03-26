@@ -4,7 +4,7 @@ import os
 from typing import Any, Dict
 from tabulate import tabulate
 
-from src.types import ConstraintType
+from src.types import ConstraintType, ConstraintsType
 
 from .results import save_results
 from .load_data import load_data
@@ -33,8 +33,8 @@ def print_metrics() -> None:
 def execute_run(data_path: str, result_path: str, run_options: RunOptions) -> None:
     data = load_data(data_path)
 
-    if run_options.constraints is not None:
-        for group, constraint in run_options.constraints.items():
+    if run_options.constraints.constraints is not None:
+        for group, constraint in run_options.constraints.constraints.items():
             if group not in data:
                 raise KeyError(f"Group {group} is not in data")
             data[group].constraint = constraint
@@ -164,9 +164,9 @@ def cli_execute(args: argparse.Namespace) -> None:
         if os.path.isfile(constraints_path):
             with open(constraints_path, "r", encoding="utf-8") as f:
                 constraints = json.load(f)
-                constraints = {
+                constraints = ConstraintsType(constraints={
                     group: ConstraintType(**constraint) for group, constraint in constraints.items()
-                }
+                })
  
         logger.info("Methods to run: %s", ', '.join(methods))
         if len(metrics) > 0:

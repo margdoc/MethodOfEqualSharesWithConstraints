@@ -23,7 +23,8 @@ class ConstraintType(BaseModel):
     def none(self):
         return ConstraintType(lower_bound=None, upper_bound=None)
 
-ConstraintsType = Optional[Dict[str, ConstraintType]]
+class ConstraintsType(BaseModel):
+    constraints: Optional[Dict[str, ConstraintType]]
 
 class InputDataPerGroup(BaseModel):
     group: ProjectsGroup

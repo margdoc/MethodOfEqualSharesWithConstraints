@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from .metrics import MetricsScores
 from .logger import get_logs
+from .types import ConstraintsType
 
 # TODO: correctly handle polish letters in files
 
@@ -19,6 +20,7 @@ class Results(BaseModel):
     metrics_scores: MetricsScores
     district_results: Dict[str, MetricsScores]
     used_parameters: Dict[str, Dict[str, Any]]
+    constraints: ConstraintsType
 
 def district_results_to_json(district_results: Dict[str, MetricsScores]) -> Dict[str, Any]:
     return {

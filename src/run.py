@@ -85,4 +85,5 @@ def run(data: Dict[str, InputDataPerGroup], run_options: RunOptions) -> Results:
     return Results(outcomes=outcomes,
                    metrics_scores=metrics_scores,
                    district_results=metrics_results_for_group,
-                   used_parameters=run_options.parameters.to_dict())
+                   used_parameters=run_options.parameters.to_dict(),
+                   constraints=run_options.constraints)
